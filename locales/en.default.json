@@ -1,4 +1,10 @@
 {
+  "a11y": {
+    "open_menu": "Open menu",
+    "open_cart": "Open cart",
+    "main_nav": "Main navigation"
+  },
+
   "404": {
     "title": "404",
     "not_found": "Page not found.",
