@@ -17,9 +17,11 @@
 {% endstyle %}
 
 <script>
-  document.querySelector('.header__burger-menu').addEventListener('click', (e) => {
-    e.currentTarget.classList.toggle('open');
-    document.querySelector('.header__menu').classList.toggle('open');
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.header__burger-menu').addEventListener('click', (e) => {
+      e.currentTarget.classList.toggle('open');
+      document.querySelector('.header__menu').classList.toggle('open');
+    });
   });
 </script>
 
@@ -28,7 +30,7 @@
     <i
       class="header__burger-menu"
       role="button"
-      aria-label="{{ 'a11y.open_menu' | t }}"
+      aria-label="{{ 'header.open_menu' | t }}"
     ></i>
 
     <a href="{{ routes.root_url }}">
@@ -53,7 +55,7 @@
       {% endif %}
     </a>
 
-    <nav class="header__menu" aria-label="{{ 'a11y.main_nav' | t }}">
+    <nav class="header__menu" aria-label="{{ 'header.main_nav' | t }}">
       <ul class="header__menu-list">
         {% if section.settings.menu %}
           {% assign menu_handle = section.settings.menu %}
@@ -68,7 +70,7 @@
 
     <a
       href="{{ routes.cart_url }}"
-      aria-label="{{ 'a11y.open_cart' | t }}"
+      aria-label="{{ 'header.open_cart' | t }}"
     >
       <i class="header__cart"></i>
     </a>

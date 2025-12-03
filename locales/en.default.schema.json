@@ -48,7 +48,13 @@
     "show_payment_icons": "Show payment icons",
     "text_style": "Text style",
     "text": "Text",
-    "logo": "Logo"
+    "logo": "Logo",
+    "footer": {
+      "bottom_links": "Bottom Links",
+      "block_links": "Block Links",
+      "links": "Links",
+      "title": "Title"
+    }
   },
   "options": {
     "alignment": {
