@@ -1,9 +1,33 @@
 /** Critical CSS for the theme. This file is included on every page. */
 
 /* Reset styles inspired by https://www.joshwcomeau.com/css/custom-css-reset/ */
-* {
+:root {
+  --dark: #111;
+  --white: #fff;
+  --gray: #737373;
+  --gray-light: #cacacb;
+  --stroke: #ebebeb;
+}
+
+:root {
+  --font-family: "Poppins", sans-serif;
+  --second-family: "Inter", sans-serif;
+  --third-family: "Lato", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*,
+::before,
+::after {
   box-sizing: border-box;
-  margin: 0;
+}
+
+.wrapper {
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 body {
@@ -61,7 +85,7 @@ p:empty {
   display: none;
 }
 
-:is(p, h1, h2, h3, h4, h5, h6):first-child,
+/* :is(p, h1, h2, h3, h4, h5, h6):first-child,
 :empty:first-child + :where(p, h1, h2, h3, h4, h5, h6) {
   margin-block-start: 0;
 }
@@ -69,7 +93,7 @@ p:empty {
 :is(p, h1, h2, h3, h4, h5, h6):last-child,
 :where(p, h1, h2, h3, h4, h5, h6) + :has(+ :empty:last-child) {
   margin-block-end: 0;
-}
+} */
 
 /** Theme styles below */
 body {
@@ -97,7 +121,8 @@ body {
     calc(100% - var(--page-margin) * 2)
   );
   --content-margin: minmax(var(--page-margin), 1fr);
-  --content-grid: var(--content-margin) var(--content-width) var(--content-margin);
+  --content-grid: var(--content-margin) var(--content-width)
+    var(--content-margin);
 
   /* This is required to make <img> elements work as background images */
   position: relative;

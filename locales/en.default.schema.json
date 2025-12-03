@@ -47,7 +47,14 @@
     "page_width": "Page width",
     "show_payment_icons": "Show payment icons",
     "text_style": "Text style",
-    "text": "Text"
+    "text": "Text",
+    "logo": "Logo",
+    "footer": {
+      "bottom_links": "Bottom Links",
+      "block_links": "Block Links",
+      "links": "Links",
+      "title": "Title"
+    }
   },
   "options": {
     "alignment": {
@@ -71,6 +78,6 @@
       "title": "Title",
       "subtitle": "Subtitle",
       "normal": "Normal text"
-    },
+    }
   }
 }

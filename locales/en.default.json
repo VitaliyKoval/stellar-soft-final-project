@@ -1,4 +1,14 @@
 {
+  "header": {
+    "open_menu": "Open menu",
+    "open_cart": "Open cart",
+    "main_nav": "Main navigation"
+  },
+
+  "footer": {
+    "rights": "Nike, Inc. All rights reserved"
+  },
+
   "404": {
     "title": "404",
     "not_found": "Page not found.",
