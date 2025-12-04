@@ -13,9 +13,44 @@
   "sections": {
     "footer": {
       "type": "footer",
+      "blocks": {
+        "block_links_cKmcB9": {
+          "type": "block_links",
+          "settings": {
+            "title": "Resources",
+            "links": "resources"
+          }
+        },
+        "block_links_XKbcFn": {
+          "type": "block_links",
+          "settings": {
+            "title": "Help",
+            "links": "help"
+          }
+        },
+        "block_links_NHaYm3": {
+          "type": "block_links",
+          "settings": {
+            "title": "Company",
+            "links": "company"
+          }
+        },
+        "block_links_b7tKqV": {
+          "type": "block_links",
+          "settings": {
+            "title": "Menu",
+            "links": "menu"
+          }
+        }
+      },
+      "block_order": [
+        "block_links_cKmcB9",
+        "block_links_XKbcFn",
+        "block_links_NHaYm3",
+        "block_links_b7tKqV"
+      ],
       "settings": {
-        "menu": "",
-        "show_payment_icons": true
+        "bottom_links": "footer"
       }
     }
   },
