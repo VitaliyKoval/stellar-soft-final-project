@@ -9,12 +9,19 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "hello-world",
-      "settings": {}
+    "promo_banner_W48kTA": {
+      "type": "promo-banner",
+      "name": "t:promo_banner.presets.name",
+      "settings": {
+        "banner_image": "shopify://shop_images/Hero_Image.png",
+        "banner_title": "Step Into Next-Level Comfort",
+        "banner_text": "Experience the perfect mix of style, support, and all-day cushioning with Nike Air Max Plus.",
+        "button_label": "Shop Now",
+        "button_link": "shopify://collections/all"
+      }
     }
   },
   "order": [
-    "main"
+    "promo_banner_W48kTA"
   ]
 }
