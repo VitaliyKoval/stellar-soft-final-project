@@ -129,12 +129,13 @@
   .footer__bottom {
     margin-top: 36px;
     gap: 12px;
-    flex-direction: column-reverse;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .footer__bottom-links {
     flex-direction: column;
-    align-items: сenter;
+    align-items: flex-start;
     gap: 12px;
   }
 }
