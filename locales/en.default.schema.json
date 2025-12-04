@@ -79,5 +79,18 @@
       "subtitle": "Subtitle",
       "normal": "Normal text"
     }
+  },
+  "promo_banner": {
+    "name": "Promo Banner",
+    "settings": {
+      "banner_image": "Banner Image",
+      "banner_title": "Heading",
+      "banner_text": "Text",
+      "button_label": "Button Text",
+      "button_link": "Button Link"
+    },
+    "presets": {
+      "name": "Promo Banner"
+    }
   }
 }

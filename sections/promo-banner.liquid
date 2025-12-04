@@ -1,0 +1,76 @@
+{{ 'promo-banner.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="promo-banner"
+  aria-labelledby="promo-banner-title-{{ section.id }}"
+  aria-describedby="promo-banner-text-{{ section.id }}"
+>
+  {%- if section.settings.banner_image != blank -%}
+    {{
+      section.settings.banner_image
+      | image_url: width: 1440
+      | image_tag:
+        class: 'promo-banner__image',
+        widths: '375, 480, 640, 768, 1024, 1280, 1440',
+        sizes: '100vw',
+        loading: 'lazy',
+        fetchpriority: 'low',
+        alt: section.settings.banner_title
+      | default: 'Promo Banner Image'
+    }}
+  {%- endif -%}
+  <div class="wrapper">
+    <div class="promo-banner__content">
+      <h2 id="promo-banner-title-{{ section.id }}" class="promo-banner__title">{{ section.settings.banner_title }}</h2>
+      <p id="promo-banner-text-{{ section.id }}" class="promo-banner__text">
+        {{ section.settings.banner_text }}
+      </p>
+
+      {%- if section.settings.button_link != blank -%}
+        <a href="{{ section.settings.button_link }}" class="promo-banner__button">
+          {{ section.settings.button_label }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:promo_banner.name",
+  "tag": "section",
+  "class": "section-promo-banner-wrap",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "t:promo_banner.settings.banner_image"
+    },
+    {
+      "type": "text",
+      "id": "banner_title",
+      "label": "t:promo_banner.settings.banner_title"
+    },
+    {
+      "type": "textarea",
+      "id": "banner_text",
+      "label": "t:promo_banner.settings.banner_text"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:promo_banner.settings.button_label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:promo_banner.settings.button_link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:promo_banner.presets.name"
+    }
+  ]
+}
+{% endschema %}
