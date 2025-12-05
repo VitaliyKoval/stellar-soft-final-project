@@ -19,9 +19,18 @@
         "button_label": "Shop Now",
         "button_link": "shopify://collections/all"
       }
+    },
+    "reviews_jKdzPr": {
+      "type": "reviews",
+      "name": "t:reviews.presets.name",
+      "settings": {
+        "title": "Reviews",
+        "limit": 3
+      }
     }
   },
   "order": [
+    "reviews_jKdzPr",
     "promo_banner_W48kTA"
   ]
 }
