@@ -67,8 +67,12 @@
 }
 
 @media (max-width: 656px) {
+  .header {
+    min-height: 56px;
+  }
+
   .header .wrapper {
-    padding: 20px 20px;
+    padding: 8px 8px;
   }
 
   .header__menu {
@@ -102,7 +106,7 @@
 
   .header__menu.open {
     height: 222px;
-    margin-top: 30px;
+    margin-top: 60px;
     overflow: visible;
   }
 }

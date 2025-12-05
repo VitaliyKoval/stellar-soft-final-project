@@ -101,5 +101,21 @@
     "presets": {
       "name": "Promo Banner"
     }
+  },
+  "reviews": {
+    "name": "Reviews Section",
+    "settings": {
+      "title": {
+        "label": "Section title",
+        "default": "Reviews"
+      },
+      "limit": {
+        "label": "Number of reviews to show"
+      }
+    },
+    "user_photo_alt": "User Photo",
+    "presets": {
+      "name": "Reviews"
+    }
   }
 }
