@@ -1,0 +1,82 @@
+{{ 'reviews.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .review-card__rating .star.full {
+    background-image: url({{'star-full.svg'|asset_url}});
+  }
+  .review-card__rating .star.half {
+    background-image: url({{'star-half.svg'|asset_url}});
+  }
+  .review-card__rating .star.empty {
+    background-image: url({{'star-empty.svg'|asset_url}});
+  }
+</style>
+
+<script src="{{ 'reviews.js' | asset_url }}" defer></script>
+
+{% assign reviews = shop.metaobjects.reviewer.values %}
+
+{% if reviews != blank %}
+  <section class="reviews section-{{ section.id }}">
+    <div class="wrapper">
+      <h2 class="reviews__title">{{ section.settings.title }}</h2>
+
+      <div class="reviews__grid">
+        {% for review in reviews limit: section.settings.limit %}
+          <div class="review-card">
+            <div class="review-card__info">
+              <div
+                class="review-card__rating"
+                aria-label="{{ review.rating.value }} {{ 'reviews.rating_aria_label' | t }}"
+              ></div>
+              <p class="review-card__date">{{ review.date | date: '%d.%m.%Y' }}</p>
+            </div>
+
+            <blockquote class="review-card__text">{{ review.text }}</blockquote>
+
+            <div class="review-card__author-info">
+              {{
+                review.photo
+                | image_url: width: 54
+                | image_tag: class: 'review-card__author-photo', loading: 'lazy', fetchpriority: 'low', alt: review.name, width: 54, height: 54
+              }}
+
+              <div class="review-card__author-details">
+                <p class="review-card__author-name">{{ review.name }}</p>
+                <p class="review-card__author-location">{{ review.city }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "t:reviews.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:reviews.settings.title.label",
+      "default": "t:reviews.settings.title.default"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "t:reviews.settings.limit.label",
+      "min": 1,
+      "max": 9,
+      "step": 1,
+      "default": 3
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:reviews.presets.name"
+    }
+  ]
+}
+{% endschema %}
