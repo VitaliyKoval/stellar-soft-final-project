@@ -117,5 +117,22 @@
     "presets": {
       "name": "Reviews"
     }
+  },
+  "recommendations": {
+    "name": "Product Recommendations",
+    "settings": {
+      "heading": {
+        "label": "Heading"
+      },
+      "product": {
+        "label": "Select Product"
+      },
+      "products_limit": {
+        "label": "Number of Products"
+      }
+    },
+    "presets": {
+      "name": "Product Recommendations"
+    }
   }
 }

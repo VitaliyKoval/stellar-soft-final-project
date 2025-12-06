@@ -172,3 +172,9 @@ body {
 .shopify-section > .full-width {
   grid-column: 1 / -1;
 }
+
+@media (max-width: 768px) {
+  * {
+    cursor: default !important;
+  }
+}

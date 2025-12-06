@@ -70,5 +70,9 @@
   },
   "reviews": {
     "rating_aria_label": "out of 5 stars"
+  },
+  "recommendations": {
+    "previous_slide": "Previous slide",
+    "next_slide": "Next slide"
   }
 }
