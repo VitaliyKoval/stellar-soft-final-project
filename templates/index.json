@@ -9,6 +9,23 @@
  */
 {
   "sections": {
+    "recommendations_Uk3xFh": {
+      "type": "recommendations",
+      "name": "t:recommendations.presets.name",
+      "settings": {
+        "heading": "You may also like",
+        "product": "nike-air-max-plus",
+        "products_limit": 6
+      }
+    },
+    "reviews_jKdzPr": {
+      "type": "reviews",
+      "name": "t:reviews.presets.name",
+      "settings": {
+        "title": "Reviews",
+        "limit": 3
+      }
+    },
     "promo_banner_W48kTA": {
       "type": "promo-banner",
       "name": "t:promo_banner.presets.name",
@@ -19,17 +36,10 @@
         "button_label": "Shop Now",
         "button_link": "shopify://collections/all"
       }
-    },
-    "reviews_jKdzPr": {
-      "type": "reviews",
-      "name": "t:reviews.presets.name",
-      "settings": {
-        "title": "Reviews",
-        "limit": 3
-      }
     }
   },
   "order": [
+    "recommendations_Uk3xFh",
     "reviews_jKdzPr",
     "promo_banner_W48kTA"
   ]
