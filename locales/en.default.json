@@ -74,5 +74,18 @@
   "recommendations": {
     "previous_slide": "Previous slide",
     "next_slide": "Next slide"
+  },
+  "product_benefits": {
+    "benefit_1": "Free U.S. Shipping Over $150",
+    "benefit_2": "Safe & Secure Checkout",
+    "benefit_3": "Afterpay available at checkout",
+    "benefit_1_icon": "Shipping Box Icon",
+    "benefit_2_icon": "Lock Icon",
+    "benefit_3_icon": "Afterpay Icon"
+  },
+  "product_accordion": {
+    "size_fit": "SIZE & FIT",
+    "product_notes": "PRODUCT NOTES",
+    "delivery_returns": "DELIVERY & RETURNS"
   }
 }

@@ -1,0 +1,28 @@
+{{ 'product-benefits.css' | asset_url | stylesheet_tag }}
+
+{% assign benefit_icons = 'benefit-1.svg,
+   benefit-2.svg,
+   benefit-3.svg' | split: ',' %}
+
+{% assign benefit_keys = 'product_benefits.benefit_1, product_benefits.benefit_2, product_benefits.benefit_3'
+  | split: ','
+%}
+{% assign benefit_icon_keys = 'product_benefits.benefit_1_icon, product_benefits.benefit_2_icon, product_benefits.benefit_3_icon'
+  | split: ','
+%}
+
+{% assign last_index = benefit_icons.size | minus: 1 %}
+
+<ul class="benefits" role="list">
+  {% for i in (0..last_index) %}
+    <li class="benefits__item">
+      <span
+        class="benefits__icon"
+        aria-label="{{ benefit_icon_keys[i] | strip | t }}"
+      >
+        {{- benefit_icons[i] | inline_asset_content -}}
+      </span>
+      {{ benefit_keys[i] | strip | t }}
+    </li>
+  {% endfor %}
+</ul>

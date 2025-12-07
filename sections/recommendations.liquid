@@ -21,12 +21,21 @@
           class="swiper-wrapper collection__cards"
           data-product-id="{{ section.settings.product.id }}"
           data-products-limit="{{ section.settings.products_limit }}"
+          data-currency-symbol="{{ shop.currency | money | replace: '0.00', '' }}"
         ></div>
 
-        <button class="swiper-button-prev" aria-label="{{ 'recommendations.previous_slide' | t }}" aria-controls="{{ swiper_id }}">
+        <button
+          class="swiper-button-prev"
+          aria-label="{{ 'recommendations.previous_slide' | t }}"
+          aria-controls="{{ swiper_id }}"
+        >
           {{- 'arrow-left.svg' | inline_asset_content -}}
         </button>
-        <button class="swiper-button-next" aria-label="{{ 'recommendations.next_slide' | t }}" aria-controls="{{ swiper_id }}">
+        <button
+          class="swiper-button-next"
+          aria-label="{{ 'recommendations.next_slide' | t }}"
+          aria-controls="{{ swiper_id }}"
+        >
           {{- 'arrow-right.svg' | inline_asset_content -}}
         </button>
       </div>

@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const wrapper = document.querySelector(".collection__cards");
   const productId = wrapper.dataset.productId;
   const limit = wrapper.dataset.productsLimit;
+  const currencySymbol = wrapper.dataset.currencySymbol;
 
   fetch(`/recommendations/products.json?product_id=${productId}&limit=${limit}`)
     .then((response) => response.json())
@@ -30,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 >
                 <div class="collection__card-info">
                   <h3 class="collection__card-name">${product.title}</h3>
-                  <span class="collection__card-price">$${price}</span>
+                  <span class="collection__card-price">${currencySymbol}${price}</span>
                 </div>
               </a>
             </article>`;

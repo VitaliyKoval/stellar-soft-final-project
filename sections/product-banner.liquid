@@ -1,0 +1,220 @@
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+{{ 'product-banner.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+
+<script src="{{ 'product-banner.js' | asset_url }}" defer></script>
+
+<section class="product">
+  <div class="wrapper">
+    {% assign product = all_products[section.settings.product] %}
+    {% if product != blank %}
+      <div class="product__header">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/" tabindex="0">Home</a>&nbsp;/&nbsp;</nav>
+        <h1 class="product__title" aria-current="page">{{ product.title }}</h1>
+      </div>
+      <div class="product__content">
+        <div class="product__gallery">
+          <div class="swiper product__gallery-swiper">
+            <div class="swiper-wrapper product__gallery-items">
+              {% assign variant_gallery = product.first_available_variant.metafields.custom.images.value %}
+              {% if variant_gallery != blank %}
+                {% for image in variant_gallery %}
+                  <div class="swiper-slide">
+                    <img
+                      src="{{ image | image_url: width: 88, height: 88, crop: 'center' }}"
+                      class="product__gallery-item {% if forloop.first %}active{% endif %}"
+                      alt="{{ product.title | escape }} thumbnail {{ forloop.index }}"
+                      width="88"
+                      height="88"
+                      loading="lazy"
+                      fetchpriority="low"
+                      tabindex="0"
+                    >
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="product__gallery-main">
+            {% if variant_gallery != blank %}
+              {% for image in variant_gallery %}
+                {% if forloop.first %}
+                  {%- capture main_image_alt -%}{{ product.title | escape }} main image{%- endcapture -%}
+                  <img
+                    src="{{ image | image_url: width: 536 }}"
+                    class="product__gallery-img"
+                    alt="{{ main_image_alt }}"
+                    loading="eager"
+                    fetchpriority="high"
+                    width="536"
+                    height="536"
+                  >
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+
+            {% assign badge_text = product.metafields.custom.badge %}
+            {% if badge_text != blank %}
+              <div
+                class="product__gallery-badge"
+                role="status"
+                aria-label="Badge: {{ badge_text }}"
+              >
+                <span>{{- 'star-full.svg' | inline_asset_content -}}</span>
+                <span>{{ badge_text -}}</span>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="product__options">
+          <div class="product__options-container">
+            {% if product.title != blank %}
+              <h3 class="product__options-header">{{ product.title }}</h3>
+            {% endif %}
+
+            {% assign reviews = product.metafields.custom.reviews.value %}
+            {% if reviews != blank %}
+              {% assign total = 0 %}
+              {% assign count = 0 %}
+              {% for r in reviews %}
+                {% assign rating_value = r.rating.value | replace: '.', '' | times: 0.1 %}
+                {% assign total = total | plus: rating_value %}
+                {% assign count = count | plus: 1 %}
+              {% endfor %}
+              {% assign average = total | divided_by: count %}
+
+              <div class="product__options-rating">
+                {% for i in (1..5) %}
+                  {% assign half_check = i | minus: 0.5 %}
+                  {% if average >= i %}
+                    <span role="img" aria-label="Full star">{{- 'star-full.svg' | inline_asset_content -}}</span>
+                  {% elsif average >= half_check %}
+                    <span role="img" aria-label="Half star">{{- 'star-half.svg' | inline_asset_content -}}</span>
+                  {% else %}
+                    <span role="img" aria-label="Empty star">{{- 'star-empty.svg' | inline_asset_content -}}</span>
+                  {% endif %}
+                {% endfor %}
+                <span>{{ average | round: 1 }}</span>
+              </div>
+            {% endif %}
+
+            {% if product.description != blank %}
+              <div class="product__options-description">{{ product.description | strip_html }}</div>
+            {% endif %}
+
+            {% if product.price != blank %}
+              <div class="product__options-prices">
+                <span class="product__options-compare-at-price" data-price="{{ product.compare_at_price | money }}">
+                  {{ product.compare_at_price | money }}
+                </span>
+                <span class="product__options-price" data-price="{{ product.price | money }}">
+                  {{ product.price | money }}
+                </span>
+              </div>
+            {% endif %}
+
+            <div class="product__options-items" role="listbox" aria-label="Select product color"></div>
+            <div class="product__options-title">
+              <p class="product__options-title-select">Select Size:</p>
+              <button
+                class="product__options-title-guide"
+                aria-expanded="false"
+                aria-controls="size-guide"
+                tabindex="0"
+              >
+                Size Guide
+              </button>
+            </div>
+            <div class="product__options-sizes" role="listbox" aria-label="Select product size"></div>
+          </div>
+
+          <form method="post" action="/cart/add">
+            <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+            <button type="submit" class="product__options-add">Add To Bag</button>
+          </form>
+
+          {% if section.settings.show_benefits %}
+            {% render 'product-benefits' %}
+          {% endif %}
+
+          {%- if section.settings.custom_description != blank -%}
+            <p class="product__options-note">
+              {{ section.settings.custom_description }}
+            </p>
+          {%- endif -%}
+
+          {% if section.settings.show_accordion %}
+            {% render 'product-accordion', product: product %}
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Banner",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Select Product" },
+    {
+      "type": "textarea",
+      "id": "custom_description",
+      "label": "Custom description (optional)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_benefits",
+      "label": "Show benefits",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_accordion",
+      "label": "Show accordion",
+      "default": true
+    }
+  ],
+  "presets": [{ "name": "Product Banner" }]
+}
+{% endschema %}
+
+<script>
+  {% assign optionIndexColor = -1 %}
+  {% assign optionIndexSize = -1 %}
+  {% for option in product.options %}
+    {% assign down = option | downcase %}
+    {% if down == 'color' or down == 'colour' %}
+      {% assign optionIndexColor = forloop.index0 %}
+    {% endif %}
+    {% if down == 'size' %}
+      {% assign optionIndexSize = forloop.index0 %}
+    {% endif %}
+  {% endfor %}
+
+  const productData = {
+    variants: [
+      {% for variant in product.variants %}
+        {
+          id: {{ variant.id }},
+          title: "{{ variant.title }}",
+          price: "{{ variant.price | money }}",
+          color: "{{ variant.options[optionIndexColor] | downcase }}",
+          size: "{{ variant.options[optionIndexSize] }}",
+          available: {{ variant.available }},
+          gallery: [
+            {% assign variant_gallery = variant.metafields.custom.images.value %}
+            {% if variant_gallery != blank %}
+              {% for image in variant_gallery %}
+                "{{ image | image_url: width: 88, height: 88, crop: 'center'}}"{% unless forloop.last %},{% endunless %}
+              {% endfor %}
+            {% endif %}
+          ]
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  };
+</script>

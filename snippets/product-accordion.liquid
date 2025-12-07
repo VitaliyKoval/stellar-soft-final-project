@@ -1,0 +1,65 @@
+{{ 'product-accordion.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  .product-accordion__icon {
+    background-image: url("{{ 'plus-circle.svg' | asset_url }}");
+  }
+
+  .product-accordion__icon.open {
+    background-image: url("{{ 'minus-circle.svg' | asset_url }}");
+  }
+{% endstyle %}
+
+<script src="{{ 'product-accordion.js' | asset_url }}" defer></script>
+
+{% assign accordion_titles_keys = 'product_accordion.size_fit,product_accordion.product_notes,product_accordion.delivery_returns'
+  | split: ','
+%}
+
+{% capture size_fit_html %}
+  <ul>
+  {% for item in product.metafields.custom.size_fit.value %}
+    <li>{{ item }}</li>
+  {% endfor %}
+  </ul>
+{% endcapture %}
+
+{% capture accordion_contents_raw %}
+  {{ size_fit_html }}|||
+  {{ product.metafields.custom.product_notes }}|||
+  {{ product.metafields.custom.returns_policy }}
+{% endcapture %}
+
+{% assign accordion_contents = accordion_contents_raw | split: '|||' %}
+{% assign last_index = accordion_titles_keys.size | minus: 1 %}
+
+<div class="product-accordion">
+  {% for i in (0..last_index) %}
+    {%- liquid
+      assign id = accordion_titles_keys[i] | handle
+    -%}
+
+    <details
+      id="product-accordion-{{ id }}"
+      class="product-accordion__item"
+    >
+      <summary
+        id="product-accordion-header-{{ id }}"
+        class="product-accordion__header"
+        aria-controls="product-accordion-content-{{ id }}"
+        role="button"
+        tabindex="0"
+      >
+        <p class="product-accordion__header-text">{{ accordion_titles_keys[i] | t }}</p>
+        <span class="product-accordion__icon"></span>
+      </summary>
+      <div
+        id="product-accordion-content-{{ id }}"
+        class="product-accordion__content"
+        aria-labelledby="product-accordion-header-{{ id }}"
+      >
+        {{ accordion_contents[i] }}
+      </div>
+    </details>
+  {% endfor %}
+</div>
