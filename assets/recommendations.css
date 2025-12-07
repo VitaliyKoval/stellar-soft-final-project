@@ -1,6 +1,9 @@
+.collection {
+  margin-top: 80px;
+}
+
 .collection .wrapper {
   padding: 0 40px;
-  margin: 0 auto;
 }
 
 .collection__header {
@@ -13,10 +16,10 @@
 
 .collection__swiper {
   position: relative;
+  margin-top: 48px;
 }
 
 .swiper-wrapper.collection__cards {
-  margin-top: 48px;
   padding-bottom: 8px;
 }
 
@@ -65,8 +68,8 @@
 
 .swiper-button-next,
 .swiper-button-prev {
-  width: 40px;
-  height: 40px;
+  width: 40px !important;
+  height: 40px !important;
   border-radius: 50%;
   top: 50%;
   transform: translateY(-50%);
@@ -87,4 +90,14 @@
 .swiper-button-prev.swiper-button-disabled,
 .swiper-button-next.swiper-button-disabled {
   display: none;
+}
+
+@media (max-width: 768px) {
+  .collection {
+    margin-top: 60px;
+  }
+
+  .collection .wrapper {
+    padding: 0 16px;
+  }
 }
