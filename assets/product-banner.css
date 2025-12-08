@@ -118,6 +118,12 @@
   color: var(--gray);
 }
 
+.product__options-indicator {
+  margin-top: 24px;
+  font-family: var(--font-family);
+  font-size: 16px;
+}
+
 .product__options-prices {
   margin-top: 24px;
   display: flex;

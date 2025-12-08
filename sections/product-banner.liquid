@@ -105,6 +105,10 @@
               <div class="product__options-description">{{ product.description | strip_html }}</div>
             {% endif %}
 
+            {% if product.first_available_variant != blank %}
+              <div class="product__options-indicator"></div>
+            {% endif %}
+
             {% if product.price != blank %}
               <div class="product__options-prices">
                 <span class="product__options-compare-at-price" data-price="{{ product.compare_at_price | money }}">
@@ -206,6 +210,7 @@
           color: "{{ variant.options[optionIndexColor] | downcase }}",
           size: "{{ variant.options[optionIndexSize] }}",
           available: {{ variant.available }},
+          inventory_quantity: {{ variant.inventory_quantity }},
           gallery: [
             {% assign variant_gallery = variant.metafields.custom.images.value %}
             {% if variant_gallery != blank %}

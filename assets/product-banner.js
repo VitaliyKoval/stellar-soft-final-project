@@ -38,6 +38,10 @@ document.addEventListener("DOMContentLoaded", function () {
       (v) => v.color === firstColor && v.available
     );
 
+    if (variants.length > 0) {
+      updateStockIndicator(variants[0].id);
+    }
+
     price.textContent = variants[0].price;
 
     sizesElement.innerHTML = "";
@@ -109,6 +113,9 @@ document.addEventListener("DOMContentLoaded", function () {
         div.textContent = `UK ${variant.size}`;
         sizesElement.appendChild(div);
       });
+      if (variants.length > 0) {
+        updateStockIndicator(variants[0].id);
+      }
 
       document.querySelector('form input[name="id"]').value = variants[0].id;
 
@@ -138,6 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
     sizeElement.classList.add("active");
     document.querySelector('form input[name="id"]').value =
       sizeElement.dataset.variantId;
+    updateStockIndicator(sizeElement.dataset.variantId);
   });
 
   addButton.addEventListener("click", (e) => {
@@ -155,4 +163,23 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => console.log("Added to cart:", data))
       .catch((err) => console.error("Error adding to cart:", err));
   });
+
+  function updateStockIndicator(variantId) {
+    const variant = productData.variants.find((v) => v.id == variantId);
+    const indicator = document.querySelector(".product__options-indicator");
+    if (!variant || !indicator) return;
+
+    const qty = variant.inventory_quantity;
+
+    if (qty >= 5) {
+      indicator.textContent = "In Stock";
+      indicator.style.color = "#7CFC00";
+    } else if (qty >= 3) {
+      indicator.textContent = "Running Out";
+      indicator.style.color = "#FFA500";
+    } else if (qty >= 1) {
+      indicator.textContent = "Low Stock";
+      indicator.style.color = "#FF6347";
+    }
+  }
 });
