@@ -1,0 +1,172 @@
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+{% assign size_rows = product.metafields.custom.standarts.value %}
+
+<div class="modal" role="dialog" aria-modal="true" aria-labelledby="size-modal-title" hidden>
+  <div class="overlay"></div>
+  <div class="modal__window">
+    <div class="modal__container">
+      <div class="size-table">
+        <div class="size-table__header">
+          {% for row in size_rows %}
+            <div>{{ row.standart }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="size-table__content swiper">
+          <div class="size-table__body swiper-wrapper">
+            {% for i in (1..16) %}
+              <div class="size-table__body-slide swiper-slide">
+                {% for row in size_rows %}
+                  {% assign key = 'size' | append: i %}
+                  <div>{{ row[key] }}</div>
+                {% endfor %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <button
+        class="modal__close"
+        aria-label="Close size guide"
+        type="button"
+      ></button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper('.size-table__content', {
+      direction: 'horizontal',
+      slidesPerView: 'auto',
+      freeMode: true,
+    });
+
+    let modal = document.querySelector('.modal');
+    let body = document.querySelector('body');
+    let close = document.querySelector('.modal__close');
+    let openBtn = document.querySelector('.product__options-title-guide');
+
+    openBtn.addEventListener('click', () => {
+      modal.style.display = 'flex';
+      body.style.overflow = 'hidden';
+    });
+
+    close.addEventListener('click', function () {
+      modal.style.display = 'none';
+      body.style.overflow = 'visible';
+    });
+
+    document.querySelector('.overlay').addEventListener('click', function () {
+      modal.style.display = 'none';
+      body.style.overflow = 'visible';
+    });
+  });
+</script>
+
+<style>
+  .modal {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .modal .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gray);
+    opacity: 0.5;
+    z-index: 1;
+  }
+
+  .modal__window {
+    display: flex;
+    position: relative;
+    z-index: 10;
+    max-width: 644px;
+    width: 100%;
+    height: 304px;
+    background: var(--white);
+  }
+
+  .modal__container {
+    padding: 48px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .size-table {
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+
+  .size-table__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 140px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .size-table__content.swiper {
+    max-width: 400px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .size-table__body.swiper-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+
+  .size-table__body-slide.swiper-slide {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100px;
+    height: 100%;
+  }
+
+  .modal__close {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    top: 16px;
+    right: 24px;
+    background-image: url("{{ 'close.svg' | asset_url }}");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .modal__window {
+      max-width: calc(100% - 32px);
+      width: 100%;
+      margin: 0 auto;
+      height: 256px;
+    }
+
+    .modal__container {
+      padding: 36px 16px;
+    }
+  }
+</style>
