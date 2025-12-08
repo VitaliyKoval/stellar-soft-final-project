@@ -32,6 +32,13 @@
 .product__gallery {
   display: flex;
   gap: 24px;
+  max-height: 536px;
+  height: 100%;
+}
+
+.product__gallery-items {
+  width: 88px;
+  height: 100%;
 }
 
 .product__gallery-items .swiper-slide {
@@ -241,6 +248,7 @@
   .product__gallery {
     flex-direction: column-reverse;
     justify-content: flex-end;
+    max-height: 648px;
   }
 
   .product__gallery-items {
@@ -254,6 +262,15 @@
     max-width: 536px;
     width: 100%;
     height: 88px;
+  }
+}
+
+@media (min-width: 1085px) {
+  .product__gallery {
+    position: -webkit-sticky;
+    position: sticky;
+    align-self: flex-start;
+    top: 0;
   }
 }
 
