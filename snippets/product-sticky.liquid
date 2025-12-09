@@ -35,9 +35,9 @@
       </div>
       {{- 'down-small.svg' | inline_asset_content -}}
     </div>
-    <form method="post" action="/cart/add">
+    {% form 'product', product %}
       <input type="hidden" name="id" id="StickyVariantId">
       <button type="submit" class="product-sticky__options-btn">{{ 'products.product.add_to_bag' | t }}</button>
-    </form>
+    {% endform %}
   </div>
 </div>

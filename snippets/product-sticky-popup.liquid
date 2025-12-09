@@ -14,10 +14,10 @@
       <div class="product-sticky-popup__colors"></div>
       <div class="product-sticky-popup__sizes"></div>
     </div>
-    <form method="post" action="/cart/add">
+    {% form 'product', product %}
       <input type="hidden" name="id" id="StickyPopupVariantId">
       <button type="submit" class="product-sticky-popup__btn">{{ 'products.product.apply' | t }}</button>
-    </form>
+    {% endform %}
   </div>
   <button
     class="product-sticky-popup__close"

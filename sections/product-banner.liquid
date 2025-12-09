@@ -141,10 +141,10 @@
             <div class="product__options-sizes" role="listbox" aria-label="Select product size"></div>
           </div>
 
-          <form method="post" action="/cart/add">
+          {% form 'product', product %}
             <input type="hidden" name="id" value="{{ product.variants.first.id }}">
             <button type="submit" class="product__options-add">Add To Bag</button>
-          </form>
+          {% endform %}
 
           <div class="product-sticky-trigger"></div>
 
