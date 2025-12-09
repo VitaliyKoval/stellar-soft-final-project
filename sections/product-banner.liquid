@@ -1,6 +1,12 @@
 {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
 {{ 'product-banner.css' | asset_url | stylesheet_tag }}
 
+{% style %}
+  .product__thumb-placeholder {
+    background-image: url("{{ 'video.svg' | asset_url }}");
+  }
+{% endstyle %}
+
 <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
 
 <script src="{{ 'product-banner.js' | asset_url }}" defer></script>
@@ -223,7 +229,15 @@
                 "{{ image | image_url: width: 88, height: 88, crop: 'center'}}"{% unless forloop.last %},{% endunless %}
               {% endfor %}
             {% endif %}
-          ]
+          ],
+          video_urls: [
+            {% assign vids = product.metafields.custom.video_urls.value %}
+            {% if vids != blank %}
+              {% for v in vids %}
+                "{{ v }}"{% unless forloop.last %},{% endunless %}
+              {% endfor %}
+            {% endif %}
+          ],
         }{% unless forloop.last %},{% endunless %}
       {% endfor %}
     ]
@@ -232,6 +246,4 @@
   window.productData = productData;
 </script>
 
-<script>
-  
-</script>
+<script></script>
