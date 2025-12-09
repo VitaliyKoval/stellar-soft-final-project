@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
           width="88"
           height="88"
           loading="lazy"
+          alt="Product thumbnail ${index + 1}"
         >
       `;
       productGallery.appendChild(slide);
