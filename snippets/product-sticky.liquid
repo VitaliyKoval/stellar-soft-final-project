@@ -1,0 +1,43 @@
+{{ 'product-sticky.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'product-sticky.js' | asset_url }}" defer="defer"></script>
+
+<div class="product-sticky u-hidden" role="region" aria-label="{{ 'products.product.sticky_header' | t }}">
+  <div class="product-sticky__content">
+    {% assign image = product.first_available_variant.featured_media %}
+    <img
+      src="{{ image  | image_url: width: 54}}"
+      alt="{{ product.title }}"
+      class="product__content-left-img"
+      width="54"
+      height="54"
+      loading="lazy"
+      fetchpriority="low"
+    >
+    <div class="product-sticky__content-info">
+      <h3 class="product-sticky__content-title">{{ product.title }}</h3>
+      <p class="product-sticky__content-prices">
+        <span class="product-sticky__content-price--original">{{ product.compare_at_price }}</span>
+        <span class="product-sticky__content-price--sale">{{ product.price }}</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="product-sticky__options">
+    <div class="product-sticky__options-colors-items">
+      <span>{{ 'products.product.color' | t }}: </span>
+    </div>
+    <div class="product-sticky__options-sizes">
+      <span>{{ 'products.product.size' | t }}: </span>
+      <div class="custom-select" id="StickyCustomSelect">
+        <div class="selected">{{ 'products.product.select_size' | t }}</div>
+        <div class="options"></div>
+      </div>
+      {{- 'down-small.svg' | inline_asset_content -}}
+    </div>
+    <form method="post" action="/cart/add">
+      <input type="hidden" name="id" id="StickyVariantId">
+      <button type="submit" class="product-sticky__options-btn">{{ 'products.product.add_to_bag' | t }}</button>
+    </form>
+  </div>
+</div>
