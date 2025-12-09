@@ -171,15 +171,42 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const qty = variant.inventory_quantity;
 
+    indicator.classList.remove("stock-in", "stock-running", "stock-low");
+
     if (qty >= 5) {
       indicator.textContent = "In Stock";
-      indicator.style.color = "#7CFC00";
+      indicator.classList.add("stock-in");
     } else if (qty >= 3) {
       indicator.textContent = "Running Out";
-      indicator.style.color = "#FFA500";
+      indicator.classList.add("stock-running");
     } else if (qty >= 1) {
       indicator.textContent = "Low Stock";
-      indicator.style.color = "#FF6347";
+      indicator.classList.add("stock-low");
     }
   }
+
+  const sticky = document.querySelector(".product-sticky");
+  const trigger = document.querySelector(".product-sticky-trigger");
+
+  if (!sticky || !trigger) {
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          sticky.classList.add("u-hidden");
+        } else {
+          sticky.classList.remove("u-hidden");
+        }
+      });
+    },
+    {
+      rootMargin: "0px 0px 0px 0px",
+      threshold: 0,
+    }
+  );
+
+  observer.observe(trigger);
 });

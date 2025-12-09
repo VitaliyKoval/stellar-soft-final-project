@@ -246,8 +246,27 @@
   color: var(--gray);
 }
 
-.active {
+.product__gallery-item.active,
+.product__options-item.active,
+.product__options-size.active {
   border: 1px solid var(--dark);
+}
+
+.product__options-indicator.stock-in {
+  color: #7cfc00;
+}
+
+.product__options-indicator.stock-running {
+  color: #ffa500;
+}
+
+.product__options-indicator.stock-low {
+  color: #ff6347;
+}
+
+.product-sticky-trigger {
+  width: 100%;
+  height: 1px;
 }
 
 @media (max-width: 1196px) {

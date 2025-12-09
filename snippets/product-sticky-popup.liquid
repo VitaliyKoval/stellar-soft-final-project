@@ -1,0 +1,27 @@
+{{ 'product-sticky-popup.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  .product-sticky-popup__close {
+    background-image: url("{{ 'close.svg' | asset_url }}");
+  }
+{% endstyle %}
+
+<script src="{{ 'product-sticky-popup.js' | asset_url }}" defer="defer"></script>
+
+<div class="product-sticky-popup active" aria-live="polite">
+  <div class="product-sticky-popup__options">
+    <div class="product-sticky-popup__options-items">
+      <div class="product-sticky-popup__colors"></div>
+      <div class="product-sticky-popup__sizes"></div>
+    </div>
+    <form method="post" action="/cart/add">
+      <input type="hidden" name="id" id="StickyPopupVariantId">
+      <button type="submit" class="product-sticky-popup__btn">{{ 'products.product.apply' | t }}</button>
+    </form>
+  </div>
+  <button
+    class="product-sticky-popup__close"
+    aria-label="{{ 'products.product.close_product_sticky' | t }}"
+    type="button"
+  ></button>
+</div>

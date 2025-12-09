@@ -87,5 +87,16 @@
     "size_fit": "SIZE & FIT",
     "product_notes": "PRODUCT NOTES",
     "delivery_returns": "DELIVERY & RETURNS"
+  },
+  "products": {
+    "product": {
+      "apply": "Apply",
+      "close_product_sticky": "Close Product Sticky",
+      "color": "Color",
+      "size": "Size",
+      "select_size": "Select size",
+      "add_to_bag": "Add to Bag",
+      "sticky_header": "Product information"
+    }
   }
 }

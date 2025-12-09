@@ -140,6 +140,8 @@
             <button type="submit" class="product__options-add">Add To Bag</button>
           </form>
 
+          <div class="product-sticky-trigger"></div>
+
           {% if section.settings.show_benefits %}
             {% render 'product-benefits' %}
           {% endif %}
@@ -157,6 +159,8 @@
       </div>
     {% endif %}
     {% render 'size-guide', product: product %}
+    {% render 'product-sticky', product: product %}
+    {% render 'product-sticky-popup', product: product %}
   </div>
 </section>
 
@@ -207,6 +211,7 @@
           id: {{ variant.id }},
           title: "{{ variant.title }}",
           price: "{{ variant.price | money }}",
+          compare_at_price: "{{ variant.compare_at_price | money }}",
           color: "{{ variant.options[optionIndexColor] | downcase }}",
           size: "{{ variant.options[optionIndexSize] }}",
           available: {{ variant.available }},
@@ -223,4 +228,10 @@
       {% endfor %}
     ]
   };
+
+  window.productData = productData;
+</script>
+
+<script>
+  
 </script>
