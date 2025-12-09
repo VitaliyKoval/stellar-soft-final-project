@@ -1,18 +1,225 @@
 document.addEventListener("DOMContentLoaded", function () {
   const price = document.querySelector(".product__options-price");
   const productGallery = document.querySelector(".product__gallery-items");
-  const mainImage = document.querySelector(".product__gallery-img");
+  const mainContainer = document.querySelector(".product__gallery-main");
   const groups = document.querySelector(".product__options-items");
   const sizesElement = document.querySelector(".product__options-sizes");
   const addButton = document.querySelector(".product__options-add");
 
-  if (!productData) {
-    return;
+  if (!productData) return;
+
+  let gallerySwiper = null;
+
+  function makeLargeImageUrl(url) {
+    try {
+      return url
+        .replace(/width=\d+/, "width=536")
+        .replace(/height=\d+/, "height=536");
+    } catch (e) {
+      return url;
+    }
   }
 
-  const uniqueColors = [
-    ...new Set(productData.variants.map((v) => v.color)),
-  ].slice(0, 3);
+  function renderGallerySlides(variant) {
+    productGallery.innerHTML = "";
+
+    (variant.gallery || []).forEach((img, index) => {
+      const slide = document.createElement("div");
+      slide.className = "swiper-slide";
+
+      slide.innerHTML = `
+        <img
+          src="${img}"
+          class="product__gallery-item ${index === 0 ? "active" : ""}"
+          data-type="image"
+          data-src="${img}"
+          data-src-large="${makeLargeImageUrl(img)}"
+          width="88"
+          height="88"
+          loading="lazy"
+        >
+      `;
+      productGallery.appendChild(slide);
+    });
+
+    (variant.video_urls || []).forEach((src) => {
+      const slide = document.createElement("div");
+      slide.className = "swiper-slide";
+      slide.innerHTML = `
+        <div
+          class="product__gallery-thumb product__gallery-thumb--video"
+          role="button"
+          tabindex="0"
+          data-type="video_url"
+          data-src="${src}"
+          aria-label="Video URL thumbnail"
+        >
+          <span class="product__thumb-placeholder"></span>
+        </div>
+      `;
+      productGallery.appendChild(slide);
+    });
+
+    if (!gallerySwiper) {
+      gallerySwiper = new Swiper(".product__gallery-swiper", {
+        direction: "vertical",
+        slidesPerView: "auto",
+        freeMode: true,
+        breakpoints: {
+          1196: { direction: "vertical", spaceBetween: 24 },
+          680: { direction: "horizontal", spaceBetween: 24 },
+          0: { direction: "horizontal", spaceBetween: 16 },
+        },
+      });
+
+      gallerySwiper.on("slideChange", handleSlideChange);
+      gallerySwiper.on("progress", handleSlideChange);
+    } else {
+      gallerySwiper.update();
+    }
+  }
+
+  function renderMainMediaByType(type, src, optionalLarge) {
+    mainContainer.innerHTML = "";
+
+    if (type === "image") {
+      const img = document.createElement("img");
+      img.className = "product__gallery-img";
+      img.src = optionalLarge || src;
+      img.alt = "Product image";
+      img.width = 536;
+      img.height = 536;
+      img.loading = "eager";
+      img.fetchPriority = "high";
+      mainContainer.appendChild(img);
+    } else if (type === "video_url") {
+      const iframe = document.createElement("iframe");
+      iframe.className = "product__gallery-iframe";
+      iframe.width = "536";
+      iframe.height = "536";
+      iframe.allow = "autoplay; fullscreen; encrypted-media";
+      iframe.setAttribute("allowfullscreen", "");
+
+      if (src.includes("youtube.com")) {
+        const match = src.match(/[?&]v=([^&]+)/);
+        const videoId = match ? match[1] : null;
+        iframe.src = videoId
+          ? `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`
+          : src;
+      } else if (src.includes("vimeo.com")) {
+        const m = src.match(/vimeo\.com\/(\d+)/);
+        const id = m ? m[1] : null;
+        iframe.src = id
+          ? `https://player.vimeo.com/video/${id}?autoplay=1&muted=1`
+          : src;
+      } else {
+        iframe.src = src;
+      }
+      mainContainer.appendChild(iframe);
+
+      setupMainIframeObserver(mainContainer.querySelector("iframe"));
+    }
+  }
+
+  function setupMainIframeObserver(iframeEl) {
+    if (!iframeEl) return;
+    const originalSrc = iframeEl.src;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            if (iframeEl.src.includes("autoplay=1")) {
+              iframeEl.src = originalSrc.replace(
+                /([?&])autoplay=1(&)?/,
+                (m, p1, p2) => (p2 ? p1 : "")
+              );
+            }
+          } else {
+            if (!iframeEl.src.includes("autoplay=1")) {
+              const sep = iframeEl.src.includes("?") ? "&" : "?";
+              iframeEl.src = iframeEl.src + sep + "autoplay=1&mute=1";
+            }
+          }
+        });
+      },
+      { threshold: 0.6 }
+    );
+
+    io.observe(iframeEl);
+  }
+
+  function onGalleryClickHandler(e) {
+    const slide = e.target.closest(".swiper-slide");
+    if (!slide) return;
+
+    const thumb =
+      slide.querySelector("[data-type]") ||
+      slide.querySelector(".product__gallery-thumb");
+    if (!thumb) return;
+
+    productGallery
+      .querySelectorAll(".product__gallery-item, .product__gallery-thumb")
+      .forEach((el) => {
+        el.classList.remove("active");
+      });
+
+    if (thumb.classList) thumb.classList.add("active");
+
+    const type = thumb.dataset.type;
+    const src = thumb.dataset.src;
+    const large = thumb.dataset.srcLarge;
+
+    renderMainMediaByType(type || "image", src || large, large);
+  }
+
+  function handleSlideChange() {
+    const activeIndex = gallerySwiper?.activeIndex ?? 0;
+    const slides = Array.from(productGallery.querySelectorAll(".swiper-slide"));
+    slides.forEach((s, i) => {
+      const thumb =
+        s.querySelector("[data-type]") ||
+        s.querySelector(".product__gallery-thumb");
+      if (!thumb) return;
+      thumb.classList.toggle("active", i === activeIndex);
+    });
+
+    const activeSlide = slides[activeIndex];
+    if (!activeSlide) return;
+    const thumb =
+      activeSlide.querySelector("[data-type]") ||
+      activeSlide.querySelector(".product__gallery-thumb");
+    if (!thumb) return;
+    const type = thumb.dataset.type;
+    const src = thumb.dataset.src;
+    const large = thumb.dataset.srcLarge;
+    renderMainMediaByType(type || "image", src || large, large);
+  }
+
+  function initVariantGalleryAndMain(variant) {
+    renderGallerySlides(variant);
+
+    const firstThumb =
+      productGallery.querySelector("[data-type]") ||
+      productGallery.querySelector(".product__gallery-item");
+    if (firstThumb) {
+      const type = firstThumb.dataset.type || "image";
+      const src = firstThumb.dataset.src || firstThumb.src;
+      const large = firstThumb.dataset.srcLarge || null;
+      renderMainMediaByType(type, src, large);
+
+      productGallery
+        .querySelectorAll(".product__gallery-item, .product__gallery-thumb")
+        .forEach((el, i) => {
+          el.classList.toggle("active", i === 0);
+        });
+    }
+
+    productGallery.removeEventListener("click", onGalleryClickHandler);
+    productGallery.addEventListener("click", onGalleryClickHandler);
+  }
+
+  const uniqueColors = [...new Set(productData.variants.map((v) => v.color))];
   const groupThumbs = [];
 
   uniqueColors.forEach((color, index) => {
@@ -56,42 +263,8 @@ document.addEventListener("DOMContentLoaded", function () {
       sizesElement.appendChild(div);
     });
 
-    productGallery.addEventListener("click", (e) => {
-      const thumb = e.target.closest(".product__gallery-item");
-      if (!thumb) return;
-
-      const thumbsArray = Array.from(
-        productGallery.querySelectorAll(".product__gallery-item")
-      );
-      const index = thumbsArray.indexOf(thumb);
-      if (index === -1) return;
-
-      thumbsArray.forEach((t) => t.classList.remove("active"));
-      thumb.classList.add("active");
-
-      const currentColor = groups.querySelector(".product__options-item.active")
-        .dataset.color;
-      const variants = productData.variants.filter(
-        (v) => v.color === currentColor && v.available
-      );
-
-      let largeImage = (variants[0].gallery[index] || thumb.src)
-        .replace(/width=\d+/, "width=536")
-        .replace(/height=\d+/, "height=536");
-      mainImage.src = largeImage;
-    });
+    initVariantGalleryAndMain(variants[0]);
   }
-
-  const gallerySwiper = new Swiper(".product__gallery-swiper", {
-    direction: "vertical",
-    slidesPerView: "auto",
-    freeMode: true,
-    breakpoints: {
-      1196: { direction: "vertical", spaceBetween: 24 },
-      680: { direction: "horizontal", spaceBetween: 24 },
-      0: { direction: "horizontal", spaceBetween: 16 },
-    },
-  });
 
   groups.addEventListener("click", (e) => {
     const groupImage = e.target.closest(".product__options-item");
@@ -119,16 +292,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       document.querySelector('form input[name="id"]').value = variants[0].id;
 
-      productGallery
-        .querySelectorAll(".product__gallery-item")
-        .forEach((thumb, index) => {
-          thumb.src = variants[0].gallery[index] || thumb.src;
-          thumb.classList.toggle("active", index === 0);
-        });
+      initVariantGalleryAndMain(variants[0]);
 
-      mainImage.src = variants[0].gallery[0]
-        .replace(/width=\d+/, "width=536")
-        .replace(/height=\d+/, "height=536");
       groups
         .querySelector(".product__options-item.active")
         ?.classList.remove("active");
@@ -146,22 +311,12 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelector('form input[name="id"]').value =
       sizeElement.dataset.variantId;
     updateStockIndicator(sizeElement.dataset.variantId);
-  });
 
-  addButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    const activeSize = sizesElement.querySelector(
-      ".product__options-size.active"
-    );
-    if (!activeSize) return;
-    fetch("/cart/add.js", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: activeSize.dataset.variantId, quantity: 1 }),
-    })
-      .then((res) => res.json())
-      .then((data) => console.log("Added to cart:", data))
-      .catch((err) => console.error("Error adding to cart:", err));
+    const variantId = Number(sizeElement.dataset.variantId);
+    const variant = productData.variants.find((v) => v.id === variantId);
+    if (variant) {
+      initVariantGalleryAndMain(variant);
+    }
   });
 
   function updateStockIndicator(variantId) {
@@ -207,6 +362,7 @@ document.addEventListener("DOMContentLoaded", function () {
       threshold: 0,
     }
   );
-
   observer.observe(trigger);
+
+  console.log(productData);
 });
