@@ -143,10 +143,9 @@
 
           {% form 'product', product %}
             <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+            <div class="product-sticky-trigger"></div>
             <button type="submit" class="product__options-add">Add To Bag</button>
           {% endform %}
-
-          <div class="product-sticky-trigger"></div>
 
           {% if section.settings.show_benefits %}
             {% render 'product-benefits' %}
