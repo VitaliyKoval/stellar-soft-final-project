@@ -29,7 +29,16 @@
               <div class="size-table__body-slide swiper-slide">
                 {% for row in size_rows %}
                   {% assign key = 'size' | append: i %}
-                  <div>{{ row[key] }}</div>
+                  <div>
+                    {% assign value = row[key] %}
+                    {% assign int_value = value | floor %}
+
+                    {% if value == int_value %}
+                      {{ int_value }}
+                    {% else %}
+                      {{ value }}
+                    {% endif %}
+                  </div>
                 {% endfor %}
               </div>
             {% endfor %}
