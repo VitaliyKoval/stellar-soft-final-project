@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = popup.querySelector(".product-sticky-popup__close");
 
   const uniqueColors = [...new Set(productData.variants.map((v) => v.color))];
-
   uniqueColors.forEach((color, index) => {
     const variantForColor = productData.variants.find(
       (v) => v.color === color && v.gallery[0]
@@ -107,8 +106,20 @@ document.addEventListener("DOMContentLoaded", () => {
       if (isMobile()) {
         showPopup();
       } else {
-        const parentForm = pageAddToBagBtn.closest("form");
-        if (parentForm) parentForm.submit();
+        const variantId = document.getElementById("StickyVariantId").value;
+        if (!variantId) return;
+
+        fetch("/cart/add.js", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("Added to cart:", data);
+            showTooltip("Product Added To Cart");
+          })
+          .catch((err) => console.error("Error adding to cart:", err));
       }
     });
   }
@@ -116,18 +127,37 @@ document.addEventListener("DOMContentLoaded", () => {
   closeBtn.addEventListener("click", hidePopup);
 
   applyBtn.addEventListener("click", (e) => {
-    if (!variantInput.value) {
-      e.preventDefault();
+    e.preventDefault();
+
+    let variantId = variantInput.value;
+
+    if (!variantId) {
       const firstSize = sizesContainer.querySelector(
         ".product-sticky-popup__size-item"
       );
       if (firstSize) {
         firstSize.classList.add("active");
-        variantInput.value = firstSize.dataset.variantId;
+        variantId = firstSize.dataset.variantId;
+        variantInput.value = variantId;
       } else {
         return;
       }
     }
+
+    if (!variantId) return;
+
+    fetch("/cart/add.js", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Added to cart:", data);
+        hidePopup();
+        showTooltip("Product Added To Cart");
+      })
+      .catch((err) => console.error("Error adding to cart:", err));
   });
 
   window.addEventListener("resize", () => {

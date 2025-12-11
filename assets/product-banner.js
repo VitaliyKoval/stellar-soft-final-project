@@ -320,6 +320,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  addButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    const activeSize = sizesElement.querySelector(
+      ".product__options-size.active"
+    );
+    if (!activeSize) return;
+    fetch("/cart/add.js", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: activeSize.dataset.variantId, quantity: 1 }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Added to cart:", data);
+        showTooltip("Product Added To Cart");
+      })
+      .catch((err) => console.error("Error adding to cart:", err));
+  });
+
   function updateStockIndicator(variantId) {
     const variant = productData.variants.find((v) => v.id == variantId);
     const indicator = document.querySelector(".product__options-indicator");
@@ -359,7 +378,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     },
     {
-      rootMargin: "0px 0px 0px 0px",
+      rootMargin: "90px 0px 0px 0px",
       threshold: 0,
     }
   );

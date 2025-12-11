@@ -107,7 +107,7 @@
 
   .header__menu.open {
     height: 222px;
-    margin-top: 60px;
+    margin-top: 30px;
     overflow: visible;
   }
 }
