@@ -96,15 +96,4 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   updateSticky(firstColorVariants[0]);
   updateCustomSelect(firstColorVariants);
-
-  function isMobile() {
-    return window.innerWidth <= 768;
-  }
-
-  addToBagBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (isMobile()) {
-    }
-  });
 });

@@ -155,6 +155,12 @@
   cursor: pointer;
 }
 
+.product-sticky__options-btn:hover {
+  background: var(--gray);
+  color: var(--stroke);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 @media (max-width: 840px) {
   .product-sticky__options {
     gap: 12px;
