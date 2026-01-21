@@ -1,0 +1,56 @@
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+{{ 'size-guide.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  .modal__close {
+    background-image: url("{{ 'close.svg' | asset_url }}");
+  }
+{% endstyle %}
+
+<script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+<script src="{{ 'size-guide.js' | asset_url }}" defer></script>
+
+{% assign size_rows = product.metafields.custom.standarts.value %}
+
+<div class="modal" role="dialog" aria-modal="true" aria-labelledby="size-modal-title" hidden>
+  <div class="overlay"></div>
+  <div class="modal__window">
+    <div class="modal__container">
+      <div class="size-table">
+        <div class="size-table__header">
+          {% for row in size_rows %}
+            <div>{{ row.standart }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="size-table__content swiper">
+          <div class="size-table__body swiper-wrapper">
+            {% for i in (1..16) %}
+              <div class="size-table__body-slide swiper-slide">
+                {% for row in size_rows %}
+                  {% assign key = 'size' | append: i %}
+                  <div>
+                    {% assign value = row[key] %}
+                    {% assign int_value = value | floor %}
+
+                    {% if value == int_value %}
+                      {{ int_value }}
+                    {% else %}
+                      {{ value }}
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <button
+        class="modal__close"
+        aria-label="Close size guide"
+        type="button"
+      ></button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+.benefits {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.benefits__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-family);
+  font-size: 14px;
+  line-height: 143%;
+  color: var(--dark);
+}
+
+.benefits__icon {
+  width: 20px;
+  height: 20px;
+}

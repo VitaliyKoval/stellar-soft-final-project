@@ -1,49 +1,256 @@
 {% comment %}
   This section is used in the product template to render product page with
   media, content, and add-to-cart form.
-
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/product
 {% endcomment %}
 
-<div class="product-images">
-  {% for image in product.images %}
-    {% render 'image', class: 'product-image', image: image %}
-  {% endfor %}
-</div>
+<style>
+  /* -------------------------------------------------------------------------
+     1. Main Container and Typography
+  -------------------------------------------------------------------------- */
+  .product-page-wrapper {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #2c2c2c;
+  }
 
-<div class="product-info">
-  <h1>{{ product.title }}</h1>
-  <p>{{ product.price | money }}</p>
-  <p>{{ product.description }}</p>
-</div>
+  /* Product Title */
+  .product-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
 
-<div class="product-form">
-  {% form 'product', product %}
-    {% assign current_variant = product.selected_or_first_available_variant %}
+  /* Price */
+  .product-price {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 25px;
+  }
 
-    <select name="id">
-      {% for variant in product.variants %}
-        <option
-          value="{{ variant.id }}"
-          {% if variant == current_variant %}
-            selected="selected"
-          {% endif %}
-        >
-          {{ variant.title }} - {{ variant.price | money }}
-        </option>
-      {% endfor %}
-    </select>
+  /* Description */
+  .product-description {
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 30px;
+  }
 
-    <input type="text" name="quantity" min="1" value="1">
+  /* -------------------------------------------------------------------------
+     2. Layout (Grid/Flexbox)
+  -------------------------------------------------------------------------- */
+  .product-main-layout {
+    display: grid;
+    /* Two columns: Images (2/3) and Info (1/3) */
+    grid-template-columns: 2fr 1fr;
+    gap: 50px;
+  }
 
-    <input type="submit" value="Add to cart">
-    {{ form | payment_button }}
-  {% endform %}
+  .product-images-section {
+    grid-column: 1 / 2;
+  }
+
+  .product-info-section {
+    grid-column: 2 / 3;
+    padding-top: 5px; /* Align with the top edge of the image */
+  }
+
+  /* -------------------------------------------------------------------------
+     3. Image Gallery
+  -------------------------------------------------------------------------- */
+  .product-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 2-3 images per row */
+    gap: 15px;
+  }
+
+  .product-image-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    padding-top: 100%; /* Ensures a square aspect ratio (1:1) */
+    background: #f8f8f8;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Style the rendered image (your 'image' snippet) */
+  .product-image-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Image covers the container, cropping excess */
+    transition: transform 0.3s ease;
+  }
+  .product-image-wrapper:hover img {
+    transform: scale(1.03);
+  }
+
+  /* -------------------------------------------------------------------------
+     4. Add-to-Cart Form
+  -------------------------------------------------------------------------- */
+  .product-form {
+    border-top: 1px solid #eee;
+    padding-top: 30px;
+  }
+
+  /* Variant Selector */
+  .variant-select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: #fff;
+    appearance: none; /* Hides the default arrow */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M5 6l5 5 5-5z" fill="%23333"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+
+  /* Quantity */
+  .quantity-input {
+    width: 80px;
+    padding: 12px;
+    margin-right: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 1rem;
+    -moz-appearance: textfield; /* Hides arrows in Firefox */
+  }
+
+  /* Buttons */
+  .form-controls-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .add-to-cart-btn {
+    flex-grow: 1; /* Button fills the remaining space */
+    padding: 15px 25px;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .add-to-cart-btn:hover {
+    background-color: #333;
+  }
+
+  /* Express Checkout Button (payment_button) */
+  .shopify-payment-button {
+    margin-top: 15px;
+  }
+  .shopify-payment-button > div {
+    display: block; /* Ensures full width */
+  }
+
+  /* -------------------------------------------------------------------------
+     5. Responsiveness (Mobile Devices)
+  -------------------------------------------------------------------------- */
+  @media (max-width: 900px) {
+    .product-main-layout {
+      /* Switch to a single column on narrow screens */
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    .product-info-section {
+      /* On mobile, info goes after images */
+      order: 2;
+    }
+    .product-images-section {
+      order: 1;
+    }
+    .product-title {
+      font-size: 2rem;
+    }
+    .product-price {
+      font-size: 1.5rem;
+    }
+    .form-controls-row {
+      flex-direction: column;
+      gap: 15px;
+      align-items: stretch;
+    }
+    .quantity-input {
+      width: 100%;
+      margin-right: 0;
+    }
+    .add-to-cart-btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="product-page-wrapper">
+  <div class="product-main-layout">
+    <div class="product-images-section">
+      <div class="product-images">
+        {% for image in product.images %}
+          <a href="{{ image | image_url: width: 2048 }}" class="product-image-wrapper">
+            <img
+              src="{{ image | image_url: width: 600 }}"
+              loading="lazy"
+              alt="{{ image.alt | escape }}"
+              width="600"
+              height="{{ 600 | divided_by: image.aspect_ratio | round }}"
+            >
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="product-info-section">
+      <div class="product-info">
+        <h1 class="product-title">{{ product.title }}</h1>
+        <p class="product-price">{{ product.price | money }}</p>
+        <div class="product-description">{{ product.description }}</div>
+      </div>
+
+      <div class="product-form">
+        {% form 'product', product %}
+          {% assign current_variant = product.selected_or_first_available_variant %}
+
+          <select name="id" class="variant-select">
+            {% for variant in product.variants %}
+              <option
+                value="{{ variant.id }}"
+                {% if variant == current_variant %}
+                  selected="selected"
+                {% endif %}
+              >
+                {{ variant.title }} - {{ variant.price | money }}
+              </option>
+            {% endfor %}
+          </select>
+
+          <div class="form-controls-row">
+            <input type="number" name="quantity" min="1" value="1" class="quantity-input" aria-label="Quantity">
+            <input type="submit" value="Add to cart" class="add-to-cart-btn">
+          </div>
+
+          {{ form | payment_button }}
+        {% endform %}
+      </div>
+    </div>
+  </div>
 </div>
 
 {% schema %}
 {
-  "name": "t:general.product",
+  "name": "Product",
   "settings": [],
   "disabled_on": {
     "groups": ["header", "footer"]

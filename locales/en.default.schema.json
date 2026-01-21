@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "general": {
     "404": "Not found",
@@ -47,7 +56,14 @@
     "page_width": "Page width",
     "show_payment_icons": "Show payment icons",
     "text_style": "Text style",
-    "text": "Text"
+    "text": "Text",
+    "logo": "Logo",
+    "footer": {
+      "bottom_links": "Bottom Links",
+      "block_links": "Block Links",
+      "links": "Links",
+      "title": "Title"
+    }
   },
   "options": {
     "alignment": {
@@ -71,6 +87,52 @@
       "title": "Title",
       "subtitle": "Subtitle",
       "normal": "Normal text"
+    }
+  },
+  "promo_banner": {
+    "name": "Promo Banner",
+    "settings": {
+      "banner_image": "Banner Image",
+      "banner_title": "Heading",
+      "banner_text": "Text",
+      "button_label": "Button Text",
+      "button_link": "Button Link"
     },
+    "presets": {
+      "name": "Promo Banner"
+    }
+  },
+  "reviews": {
+    "name": "Reviews Section",
+    "settings": {
+      "title": {
+        "label": "Section title",
+        "default": "Reviews"
+      },
+      "limit": {
+        "label": "Number of reviews to show"
+      }
+    },
+    "user_photo_alt": "User Photo",
+    "presets": {
+      "name": "Reviews"
+    }
+  },
+  "recommendations": {
+    "name": "Product Recommendations",
+    "settings": {
+      "heading": {
+        "label": "Heading"
+      },
+      "product": {
+        "label": "Select Product"
+      },
+      "products_limit": {
+        "label": "Number of Products"
+      }
+    },
+    "presets": {
+      "name": "Product Recommendations"
+    }
   }
 }

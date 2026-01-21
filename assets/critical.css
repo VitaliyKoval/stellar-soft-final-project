@@ -1,9 +1,85 @@
 /** Critical CSS for the theme. This file is included on every page. */
 
 /* Reset styles inspired by https://www.joshwcomeau.com/css/custom-css-reset/ */
-* {
-  box-sizing: border-box;
+:root {
+  --dark: #111;
+  --white: #fff;
+  --gray: #737373;
+  --gray-light: #cacacb;
+  --stroke: #ebebeb;
+}
+
+:root {
+  --font-family: "Poppins", sans-serif;
+  --second-family: "Inter", sans-serif;
+  --third-family: "Lato", sans-serif;
+}
+
+*,
+*::before,
+*::after {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  line-height: 1;
+  scroll-behavior: smooth;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.wrapper {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.tooltip {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: var(--gray);
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: 5px;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 body {
@@ -61,7 +137,7 @@ p:empty {
   display: none;
 }
 
-:is(p, h1, h2, h3, h4, h5, h6):first-child,
+/* :is(p, h1, h2, h3, h4, h5, h6):first-child,
 :empty:first-child + :where(p, h1, h2, h3, h4, h5, h6) {
   margin-block-start: 0;
 }
@@ -69,7 +145,7 @@ p:empty {
 :is(p, h1, h2, h3, h4, h5, h6):last-child,
 :where(p, h1, h2, h3, h4, h5, h6) + :has(+ :empty:last-child) {
   margin-block-end: 0;
-}
+} */
 
 /** Theme styles below */
 body {
@@ -97,7 +173,8 @@ body {
     calc(100% - var(--page-margin) * 2)
   );
   --content-margin: minmax(var(--page-margin), 1fr);
-  --content-grid: var(--content-margin) var(--content-width) var(--content-margin);
+  --content-grid: var(--content-margin) var(--content-width)
+    var(--content-margin);
 
   /* This is required to make <img> elements work as background images */
   position: relative;
@@ -114,4 +191,10 @@ body {
 /* Child elements that use the full-width utility class span the entire viewport. */
 .shopify-section > .full-width {
   grid-column: 1 / -1;
+}
+
+@media (max-width: 768px) {
+  * {
+    cursor: default !important;
+  }
 }

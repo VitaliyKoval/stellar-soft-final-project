@@ -1,41 +1,57 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
-  </div>
+{{ 'footer.css' | asset_url | stylesheet_tag }}
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
+{% style %}
+  .footer-icon {
+    background-image: url({{'up-small.svg'|asset_url}});
+  }
 
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
-    {% endif %}
+  .footer-icon.close {
+    background-image: url({{'down-small.svg'|asset_url}});
+  }
+{% endstyle %}
+
+<script src="{{ 'footer.js' | asset_url }}" defer></script>
+
+<footer class="footer" role="contentinfo">
+  <div class="wrapper">
+    <div class="footer__container">
+      {%- for block in section.blocks -%}
+        {% if block.type == 'block_links' %}
+          <details
+            class="footer__section"
+            open
+          >
+            <summary class="footer__title">
+              {{ block.settings.title }}
+              <i class="footer-icon"></i>
+            </summary>
+            <ul class="footer__list">
+              {% assign list_handle = block.settings.links %}
+              {% for link in linklists[list_handle].links %}
+                <li class="footer__item">
+                  <a href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </details>
+        {% endif %}
+      {%- endfor -%}
+    </div>
+
+    <div class="footer__bottom">
+      <p>© 2025 {{ 'footer.rights' | t }}</p>
+      <ul class="footer__bottom-links">
+        {% if section.settings.bottom_links %}
+          {% for link in linklists[section.settings.bottom_links].links %}
+            <li>
+              <a href="{{ link.url }}">{{ link.title }}</a>
+            </li>
+          {% endfor %}
+        {% endif %}
+      </ul>
+    </div>
   </div>
 </footer>
-
-{% stylesheet %}
-  footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-  }
-  footer a {
-    text-decoration: none;
-    color: var(--color-foreground);
-  }
-  footer .footer__links,
-  footer .footer__payment {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
 
 {% schema %}
 {
@@ -43,15 +59,28 @@
   "settings": [
     {
       "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": "t:labels.show_payment_icons",
-      "default": true
+      "id": "bottom_links",
+      "label": "t:labels.footer.bottom_links"
     }
-  ]
+  ],
+  "blocks": [
+    {
+      "type": "block_links",
+      "name": "t:labels.footer.block_links",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:labels.footer.title"
+        },
+        {
+          "type": "link_list",
+          "id": "links",
+          "label": "t:labels.footer.links"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4
 }
 {% endschema %}

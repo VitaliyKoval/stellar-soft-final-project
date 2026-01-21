@@ -1,0 +1,87 @@
+.reviews {
+}
+
+.reviews .wrapper {
+  margin: 80px auto;
+  padding: 0 60px;
+}
+
+.reviews__title {
+  text-align: center;
+  font-family: var(--font-family);
+  font-size: 30px;
+  text-align: center;
+  color: var(--dark);
+}
+
+.reviews__grid {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.review-card {
+  padding: 24px;
+  max-width: 424px;
+}
+.review-card__info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 16px;
+}
+.review-card__rating .star {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  margin-right: 7px;
+  background-size: contain;
+}
+
+.review-card__rating .star:last-child {
+  margin-right: 0;
+}
+
+.review-card__date {
+  font-family: var(--font-family);
+  font-size: 16px;
+  color: var(--gray);
+}
+
+.review-card__text {
+  margin-top: 24px;
+  min-height: 72px;
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--dark);
+}
+
+.review-card__author-info {
+  margin-top: 24px;
+  display: flex;
+  gap: 16px;
+}
+
+.review-card__author-name {
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--dark);
+}
+
+.review-card__author-location {
+  margin-top: 8px;
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--gray);
+}
+
+@media (max-width: 768px) {
+  .reviews .wrapper {
+    margin: 60px auto;
+    padding: 0 16px;
+  }
+}

@@ -1,0 +1,76 @@
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+{{ 'recommendations.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+<script src="{{ 'recommendations.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign heading_id = 'collection-heading-' | append: section.id
+  assign swiper_id = 'swiper-' | append: section.id
+-%}
+
+<section class="collection" data-section-id="{{ section.id }}" role="region" aria-labelledby="{{ heading_id }}">
+  <div class="wrapper">
+    {% if section.settings.heading != blank %}
+      <h2 id="{{ heading_id }}" class="collection__header">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    {% if section.settings.product != blank %}
+      <div class="swiper collection__swiper">
+        <div
+          id="{{ swiper_id }}"
+          class="swiper-wrapper collection__cards"
+          data-product-id="{{ section.settings.product.id }}"
+          data-products-limit="{{ section.settings.products_limit }}"
+          data-currency-symbol="{{ shop.currency | money | replace: '0.00', '' }}"
+        ></div>
+
+        <button
+          class="swiper-button-prev"
+          aria-label="{{ 'recommendations.previous_slide' | t }}"
+          aria-controls="{{ swiper_id }}"
+        >
+          {{- 'arrow-left.svg' | inline_asset_content -}}
+        </button>
+        <button
+          class="swiper-button-next"
+          aria-label="{{ 'recommendations.next_slide' | t }}"
+          aria-controls="{{ swiper_id }}"
+        >
+          {{- 'arrow-right.svg' | inline_asset_content -}}
+        </button>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:recommendations.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:recommendations.settings.heading.label"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "t:recommendations.settings.product.label"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "t:recommendations.settings.products_limit.label",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:recommendations.presets.name"
+    }
+  ]
+}
+{% endschema %}

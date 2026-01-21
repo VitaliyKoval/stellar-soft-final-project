@@ -1,4 +1,23 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
+  "header": {
+    "open_menu": "Open menu",
+    "open_cart": "Open cart",
+    "main_nav": "Main navigation"
+  },
+
+  "footer": {
+    "rights": "Nike, Inc. All rights reserved"
+  },
+
   "404": {
     "title": "404",
     "not_found": "Page not found.",
@@ -48,5 +67,36 @@
     "submit": "Search",
     "no_results_html": "No results found for {{ terms }}",
     "results_for_html": "{{ count }} results found for {{ terms }}"
+  },
+  "reviews": {
+    "rating_aria_label": "out of 5 stars"
+  },
+  "recommendations": {
+    "previous_slide": "Previous slide",
+    "next_slide": "Next slide"
+  },
+  "product_benefits": {
+    "benefit_1": "Free U.S. Shipping Over $150",
+    "benefit_2": "Safe & Secure Checkout",
+    "benefit_3": "Afterpay available at checkout",
+    "benefit_1_icon": "Shipping Box Icon",
+    "benefit_2_icon": "Lock Icon",
+    "benefit_3_icon": "Afterpay Icon"
+  },
+  "product_accordion": {
+    "size_fit": "SIZE & FIT",
+    "product_notes": "PRODUCT NOTES",
+    "delivery_returns": "DELIVERY & RETURNS"
+  },
+  "products": {
+    "product": {
+      "apply": "Apply",
+      "close_product_sticky": "Close Product Sticky",
+      "color": "Color",
+      "size": "Size",
+      "select_size": "Select size",
+      "add_to_bag": "Add to Bag",
+      "sticky_header": "Product information"
+    }
   }
 }
